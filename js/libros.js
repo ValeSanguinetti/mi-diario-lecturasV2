@@ -1,125 +1,111 @@
-function guardarLibro() {
-    const libros = obtenerLibros();
+async function obtenerLibros() {
+    console.log("📡 Fetching libros desde:", API_URL);
 
+    const res = await fetch(API_URL);
+
+    console.log("📡 Status:", res.status);
+
+    const data = await res.json();
+
+    console.log("📚 Libros recibidos:", data);
+
+    if (!Array.isArray(data)) {
+        console.error("❌ La API no devolvió un array:", data);
+        return [];
+    }
+
+    return data;
+}
+
+// 🔹 Crear o actualizar libro
+async function guardarLibro() {
+    const token = await window.obtenerToken();
     const libro = {
-        id: indiceEditando !== null ? libros[indiceEditando].id : Date.now(),
         titulo: tituloInput.value,
         autor: autorInput.value,
         genero: GeneroInput.value,
-        inicio: fechaInicioInput.value,
-        fin: fechaFinInput.value,
+        inicio: fechaInicioInput.value || null,
+        fin: fechaFinInput.value || null,
         notas: notasInput.value,
-         favorito: indiceEditando !== null
-    ? libros[indiceEditando].favorito || false
-    : false,
-        notasLectura: indiceEditando !== null
-            ? libros[indiceEditando].notasLectura || []
-            : []   // 👈 nuevo libro inicia vacío
+        favorito: false
     };
 
-    if (indiceEditando !== null) {
-         libro.id = libros[indiceEditando].id;
-        libros[indiceEditando] = libro;
-        indiceEditando = null;
-    } else {
-        libros.push(libro);
-    }
+    try {
+        if (indiceEditando !== null) {
+            // ✏️ actualizar
+            console.log("🆔 ID a actualizar:", indiceEditando);
+            await fetch(`${API_URL}/${indiceEditando}`, {
+                method: "PUT",
+                headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+                body: JSON.stringify(libro),
+            });
 
-    guardarLibros(libros);
-    formLibro.reset();
-    formLibro.classList.remove("activo");
-    document.getElementById("btnGuardar").textContent = "Guardar";
-   
-  cerrarModalForm();
-    renderEstadisticas();
- renderLecturaActual();
-    renderizarUltimosDosMeses();
-
-    
-}
-
-function eliminarLibro(index) {
-    const libros = obtenerLibros();
-    libros.splice(index, 1);
-    guardarLibros(libros);
-    renderEstadisticas();
-     renderLecturaActual();
-    renderizarUltimosDosMeses();
-    
-}
-
-function cargarLibroParaEditar(index) {
-    const libros = obtenerLibros();
-    const libro = libros[index];
-
-    tituloInput.value = libro.titulo;
-    autorInput.value= libro.autor;
-    GeneroInput.value= libro.genero;
-    fechaInicioInput.value = libro.inicio;
-    fechaFinInput.value = libro.fin;
-    notasInput.value = libro.notas;
-
-    indiceEditando = index;
-    document.getElementById("btnGuardar").textContent = "Actualizar";
-    formLibro.classList.add("activo");
-
-    abrirModalForm();
-}
-
-function obtenerGruposTerminados() {
-    const libros = obtenerLibros();
-
-    const librosTerminados = libros
-        .map((libro, index) => ({ ...libro, index }))
-        .filter(libro => libro.fin && libro.fin.trim() !== "");
-
-    const grupos = {};
-
-    librosTerminados.forEach((libro) => {
-        const resultado = obtenerMesYAnio(libro);
-        if (!resultado) return;
-
-        const { clave, label } = resultado;
-
-        if (!grupos[clave]) {
-            grupos[clave] = { label, libros: [] };
+            indiceEditando = null;
+            document.getElementById("btnGuardar").textContent = "Guardar";
+        } else {
+            // ➕ crear
+            await fetch(API_URL, {
+                method: "POST",
+                 headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+                body: JSON.stringify(libro),
+            });
         }
 
-        grupos[clave].libros.push(libro);
-    });
+        formLibro.reset();
+        cerrarModalForm();
 
-    return grupos;
-}
+        renderEstadisticas();
+        renderLecturaActual();
+        renderizarUltimosDosMeses();
 
-function agregarNotaALibro(index, textoNota) {
-    const libros = obtenerLibros();
-
-    if (!libros[index].notasLectura) {
-        libros[index].notasLectura = [];
+    } catch (error) {
+        console.error("Error guardando libro:", error);
     }
-
-    libros[index].notasLectura.push(textoNota);
-
-    guardarLibros(libros);
 }
 
-function obtenerPendientes() {
-    const libros = obtenerLibros();
+// 🔹 Eliminar libro
+async function eliminarLibro(id) {
 
-    return libros
-        .map((libro, index) => ({ ...libro, index }))
-        .filter(libro =>
-            (!libro.inicio || libro.inicio.trim() === "") &&
-            (!libro.fin || libro.fin.trim() === "")
-        );
+    const token = await window.obtenerToken();
+    try {
+        await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+              headers: {
+      Authorization: `Bearer ${token}`
+    }
+        });
+
+        renderEstadisticas();
+        renderLecturaActual();
+        renderizarUltimosDosMeses();
+
+    } catch (error) {
+        console.error("Error eliminando libro:", error);
+    }
 }
-function obtenerLeyendo() {
-    const libros = obtenerLibros();
 
-    return libros
-        .map((libro, index) => ({ ...libro, index }))
-        .filter(libro =>
-            libro.inicio && libro.inicio.trim() !== "" &&
-            (!libro.fin || libro.fin.trim() === "")
-        );
+// 🔹 Cargar libro para editar
+function cargarLibroParaEditar(libro) {
+  /*console.log("📝 cargarLibroParaEditar recibió:", libro);
+  console.log("INPUT titulo:", tituloInput);
+console.log("VALOR titulo:", libro.titulo);
+*/
+
+  tituloInput.value = libro.titulo || "";
+  autorInput.value = libro.autor || "";
+  GeneroInput.value = libro.genero || "";
+  fechaInicioInput.value = libro.inicio || "";
+  fechaFinInput.value = libro.fin || "";
+  notasInput.value = libro.notas || "";
+
+  indiceEditando = libro.id;
+  document.getElementById("btnGuardar").textContent = "Actualizar";
+
+  abrirModalForm()
 }

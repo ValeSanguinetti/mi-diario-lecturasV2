@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
         integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="icon" href="/favicon.ico" />
     <title>Mi Diario de Lecturas</title>
     <link rel="stylesheet" href="css/main.css" />
 </head>
@@ -35,6 +36,7 @@
     </div> 
    
 </header>
+<button id="logout">Cerrar sesión</button>
  <div class="header-busqueda">
   <button id="btnPendientes">Listar pendientes</button>
   <button id="btnFavoritos">Listar Favoritos</button>
@@ -72,8 +74,7 @@
         Notas
         <textarea id="notas" rows="2" placeholder="Ideas, citas, opiniones…"></textarea>
       </label>
-
-      <button id="btnGuardar">Guardar</button>
+<button type="button" id="btnGuardar">Guardar</button>
     </form>
   </div>
 </div>
@@ -115,7 +116,9 @@
   <i class="fa-solid fa-angles-up"></i>
 </button>
 
-</div>
+</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/supabase.js"></script>
+<script src="js/auth.js"></script>
 <script src="js/dom.js"></script>
 <script src="js/storage.js"></script>
 <script src="js/fechas.js"></script>

@@ -1,0 +1,83 @@
+/* ===== LOGIN ===== */
+
+/* ===== LOGIN VIOLETA ===== */
+
+.login-body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f3efff, #e4dcff);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px;
+  width: 340px;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(88, 63, 188, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 10px;
+  color: #5b3cc4;
+  font-weight: 600;
+}
+
+.login-card input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.login-card input:focus {
+  outline: none;
+  border-color: #7c5cff;
+  box-shadow: 0 0 0 3px rgba(124, 92, 255, 0.15);
+}
+
+/* Botón principal violeta */
+.login-card button {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #7c5cff, #5b3cc4);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.login-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(91, 60, 196, 0.25);
+}
+
+/* Botón secundario */
+.login-card .secondary {
+  background: #ede9ff;
+  color: #5b3cc4;
+}
+
+.login-card .secondary:hover {
+  background: #ddd6ff;
+}
+
+#mensaje {
+  font-size: 13px;
+  min-height: 18px;
+  color: #b00020;
+}
+.login-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}

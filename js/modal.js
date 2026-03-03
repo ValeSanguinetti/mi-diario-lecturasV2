@@ -11,58 +11,21 @@ const listaNotasLectura = document.getElementById("listaNotasLectura");
 const nuevaNotaInput = document.getElementById("nuevaNota");
 const btnAgregarNota = document.getElementById("btnAgregarNota");
 
-let libroActivoIndex = null;
 let notaEditandoIndex = null;
-function abrirModalLibro(libro, index) {
-  libroActivoIndex = index;
+  async function abrirModalLibro(libro) {
+  libroActivoId = libro.id;
 
   modalTitulo.textContent = libro.titulo;
-  modalAutor.textContent = `${libro.autor}`;
-  modalGenero.textContent = `${libro.genero}`;
+  modalAutor.textContent = libro.autor;
+  modalGenero.textContent = libro.genero;
   modalFechas.textContent = `${libro.inicio} → ${libro.fin || "En progreso"}`;
-
   modalNotas.textContent = libro.notas || "Sin reflexión final.";
-const notas = libro.notasLectura || [];
 
-const notasHTML = notas.length
-  ? notas
-      .map(
-        (nota, i) => `
-        <li class="nota-item">
-          <div class="nota-texto">
-            ${nota.texto}
-            <small>📅 ${nota.fecha}</small>
-          </div>
-          <div class="nota-acciones">
-            <button class="editar-nota" data-index="${i}">✏️</button>
-            <button class="eliminar-nota" data-index="${i}">🗑️</button>
-          </div>
-        </li>
-      `
-      )
-      .join("")
-  : "<li>Sin notas aún</li>";
-
-listaNotasLectura.innerHTML = notasHTML;
-// 🎯 eventos editar / eliminar
-document.querySelectorAll(".editar-nota").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const index = btn.dataset.index;
-    const libros = obtenerLibros();
-    const libro = libros[libroActivoIndex];
-    const nota = libro.notasLectura[index];
-
-    nuevaNotaInput.value = nota.texto;   
-    nuevaNotaInput.focus();
-
-    notaEditandoIndex = index;           
-    btnAgregarNota.textContent = "Guardar edición";
-  });
-});
+  await renderNotas(); // 🔥 ahora trae desde API
 
   modal.classList.remove("hidden");
 }
-
+  
 cerrarModalBtn.addEventListener("click", cerrarModalSuave);
 
 function cerrarModalSuave() {
@@ -78,34 +41,64 @@ function cerrarModalSuave() {
     nuevaNotaInput.value = "";
   }, 250);
 }
-btnAgregarNota.addEventListener("click", () => {
+btnAgregarNota.addEventListener("click", async () => {
   const texto = nuevaNotaInput.value.trim();
   if (!texto) return;
 
-  const libros = obtenerLibros();
-  const libro = libros[libroActivoIndex];
+  if (notaEditandoId) {
+    // ✏️ editar
+    await fetch(`${NOTAS_API}/${notaEditandoId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texto })
+    });
 
-  if (!libro.notasLectura) {
-    libro.notasLectura = [];
-  }
-
-  // 🟣 MODO EDICIÓN
-  if (notaEditandoIndex !== null) {
-    libro.notasLectura[notaEditandoIndex].texto = texto;
-    notaEditandoIndex = null;
+    notaEditandoId = null;
     btnAgregarNota.textContent = "Agregar nota";
   } else {
-    // 🟢 MODO NUEVA NOTA
-    libro.notasLectura.push({
-      texto,
-      fecha: new Date().toISOString().split("T")[0]
+    // ➕ crear
+    await fetch(NOTAS_API, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        libro_id: libroActivoId,
+        texto,
+        fecha: new Date().toISOString().split("T")[0]
+      })
     });
   }
 
-  guardarLibros(libros);
-
   nuevaNotaInput.value = "";
-  abrirModalLibro(libro, libroActivoIndex); // refresca modal
+  await renderNotas();
+});
+listaNotasLectura.addEventListener("click", async (e) => {
+  const editarBtn = e.target.closest(".editar-nota");
+  const eliminarBtn = e.target.closest(".eliminar-nota");
+
+  if (editarBtn) {
+    const id = editarBtn.dataset.id;
+
+    const res = await fetch(`${NOTAS_API}/${libroActivoId}`);
+    const notas = await res.json();
+
+    const nota = notas.find(n => n.id == id);
+
+    nuevaNotaInput.value = nota.texto;
+    nuevaNotaInput.focus();
+
+    notaEditandoId = id;
+    btnAgregarNota.textContent = "Guardar edición";
+  }
+
+  if (eliminarBtn) {
+    const id = eliminarBtn.dataset.id;
+
+    await fetch(`${NOTAS_API}/${id}`, {
+      method: "DELETE"
+    });
+
+    await renderNotas();
+  }
 });
 
 // =====================
