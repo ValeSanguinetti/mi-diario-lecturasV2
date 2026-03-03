@@ -2,13 +2,13 @@ async function verificarSesion() {
   const { data } = await window.supabaseClient.auth.getSession();
 
   if (!data.session) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
   }
 }
 
 document.getElementById("logout").addEventListener("click", async () => {
   await window.supabaseClient.auth.signOut();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 });
 // ===============================
 // 🌐 API HELPERS (BACKEND)

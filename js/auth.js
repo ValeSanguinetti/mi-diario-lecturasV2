@@ -35,7 +35,7 @@ if (btnLogin) {
     });
 
     if (!error) {
-      window.location.href = "index.html";
+      window.location.href = "app.html";
     }
   });
 }
