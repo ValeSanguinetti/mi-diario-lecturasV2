@@ -35,7 +35,7 @@ async function guardarLibro() {
         if (indiceEditando !== null) {
             // ✏️ actualizar
             console.log("🆔 ID a actualizar:", indiceEditando);
-            await fetch(`${API_URL}/${indiceEditando}`, {
+           res= await fetch(`${API_URL}/${indiceEditando}`, {
                 method: "PUT",
                 headers: {
       "Content-Type": "application/json",
@@ -55,7 +55,7 @@ async function guardarLibro() {
             document.getElementById("btnGuardar").textContent = "Guardar";
         } else {
             // ➕ crear
-            await fetch(API_URL, {
+           res= await fetch(API_URL, {
                 method: "POST",
                  headers: {
       "Content-Type": "application/json",
