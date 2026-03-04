@@ -66,7 +66,7 @@ async function renderLecturaActual() {
 
 async function renderizarUltimosDosMeses() {
   listaLecturas.innerHTML = "";
-  const libros = await obtenerLibrosSafe();
+   const libros = librosCache
 
   const terminados = libros.filter(l => l.fin);
   if (!terminados.length) {
@@ -212,10 +212,13 @@ document.addEventListener("click", async (e) => {
 
   // Detectar estado actual de forma confiable
   const esFavorito = btn.textContent.trim() === "⭐";
-
+const token = await window.obtenerToken();
   const res = await fetch(`${API_URL}/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+       "Content-Type": "application/json",
+       "Authorization": `Bearer ${token}` 
+     },
     body: JSON.stringify({ favorito: !esFavorito })
   });
 

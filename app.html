@@ -36,10 +36,17 @@
     </div> 
    
 </header>
-<button id="logout">Cerrar sesión</button>
+</br>
+<div class="logout-container">
+  <div class="izq"><button id="btnPendientes">Listar pendientes</button>
+      <button id="btnFavoritos">Listar Favoritos</button>
+  </div>
+  <div class="der">
+    <button id="logout">Cerrar sesión</button>
+    </div>
+</div>
+
  <div class="header-busqueda">
-  <button id="btnPendientes">Listar pendientes</button>
-  <button id="btnFavoritos">Listar Favoritos</button>
   <input type="text" id="buscadorLibros" placeholder="Buscar libros... (Titulo, Autor, Genero)" />
 </div>
     <section class="contenido-principal">
@@ -116,7 +123,12 @@
   <i class="fa-solid fa-angles-up"></i>
 </button>
 
-</div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</div>
+<div id="loaderOverlay" class="loader-overlay">
+  <div class="spinner"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/dom.js"></script>

@@ -215,13 +215,28 @@ function filtrarLibros(e) {
 // ===============================
 let librosCache = [];
 async function init() {
-verificarSesion();
-  const gruposIniciales = await obtenerGruposTerminados();
-  librosCache = await obtenerLibros();
-  llenarFiltroAnios(gruposIniciales);
-  renderLecturaActual();
-  renderizarUltimosDosMeses();
-  renderEstadisticas();
+  const loader = document.getElementById("loaderOverlay");
+
+  try {
+    loader.classList.remove("loader-hidden"); // mostrar
+
+    verificarSesion();
+
+    const gruposIniciales = await obtenerGruposTerminados();
+    librosCache = await obtenerLibros();
+
+    llenarFiltroAnios(gruposIniciales);
+    renderLecturaActual();
+    renderizarUltimosDosMeses();
+    renderEstadisticas();
+
+  } catch (error) {
+    console.error("Error en init:", error);
+  } finally {
+    loader.classList.add("loader-hidden"); // ocultar pase lo que pase
+  }
 }
+
+init();
 
 init();
