@@ -266,3 +266,34 @@ transform-origin: top center;
 .der {
     display: flex;
 }
+
+/* ===== BOTONES RESPONSIVE ===== */
+
+@media (max-width: 768px) {
+
+  .logout-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+  }
+
+  .izq,
+  .der {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .logout-container button {
+    width: 100%;
+    padding: 14px;
+    font-size: 15px;
+    border-radius: 14px;
+  }
+
+  #logout {
+    background: #e9e4ff;
+  }
+}
