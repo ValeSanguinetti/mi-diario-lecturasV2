@@ -7,11 +7,11 @@
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #f3efff, #e4dcff);
-  min-height: 100svh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px; /* 👈 clave para que no toque los bordes */
+  padding: 20px;
 }
 .login-card {
   background: #ffffff;
@@ -87,15 +87,17 @@
 /* ===== LOGIN RESPONSIVE ===== */
 
 @media (max-width: 480px) {
-   .login-body {
-    align-items: flex-start;
-    padding-top: 60px;
+    .login-body {
+    align-items: flex-start; 
+    padding-top: 80px; 
   }
-  .login-card {
-    width: 90%;       /* ocupa casi todo el ancho */
-    padding: 25px;    /* menos padding para móviles */
-    gap: 12px;
+   .login-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 28px;
+     border-radius: 20px;
   }
+
 
   .login-card h2 {
     font-size: 20px;  /* título más pequeño */
