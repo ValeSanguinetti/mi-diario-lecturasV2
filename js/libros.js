@@ -31,6 +31,7 @@ async function guardarLibro() {
     };
 
     try {
+          let libroGuardado;
         if (indiceEditando !== null) {
             // ✏️ actualizar
             console.log("🆔 ID a actualizar:", indiceEditando);
@@ -42,6 +43,13 @@ async function guardarLibro() {
     },
                 body: JSON.stringify(libro),
             });
+               libroGuardado = await res.json();
+
+            // Actualizar cache: reemplazar el libro editado
+            librosCache = librosCache.map(l => 
+                l.id === indiceEditando ? libroGuardado : l
+            );
+
 
             indiceEditando = null;
             document.getElementById("btnGuardar").textContent = "Guardar";
@@ -55,6 +63,11 @@ async function guardarLibro() {
     },
                 body: JSON.stringify(libro),
             });
+             libroGuardado = await res.json();
+
+            // Actualizar cache: agregar el nuevo libro
+            librosCache.push(libroGuardado);
+        
         }
 
         formLibro.reset();

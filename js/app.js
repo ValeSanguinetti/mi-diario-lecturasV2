@@ -190,38 +190,34 @@ document.getElementById("btnFavoritos").addEventListener("click", renderFavorito
 // ===============================
 // 🔍 BUSCADOR
 // ===============================
-document.getElementById("buscadorLibros").addEventListener("input", filtrarLibros);
+document.getElementById("buscadorLibros")
+        .addEventListener("input", filtrarLibros);
 
-async function filtrarLibros(e) {
+function filtrarLibros(e) {
   const texto = e.target.value.toLowerCase().trim();
-  const libros = await obtenerLibros();
+  console.log("Buscando texto:", texto);
 
   if (texto === "") {
+    console.log("Texto vacío, renderizando todo");
     renderLecturaActual();
     renderizarUltimosDosMeses();
     return;
   }
 
-  const filtrados = libros
-    .map(libro => ({ ...libro, index: libro.id }))
-    .filter(libro =>
-      libro.titulo.toLowerCase().includes(texto) ||
-      libro.autor.toLowerCase().includes(texto) ||
-      libro.genero.toLowerCase().includes(texto) ||
-      (libro.notas && libro.notas.toLowerCase().includes(texto))
-    );
+  console.log("Libros en cache antes de filtrar:", librosCache);
 
-  renderLibrosFiltrados(filtrados);
+  renderLibrosFiltrados(texto);
 }
 
 
 // ===============================
 // 🚀 INICIALIZACIÓN
 // ===============================
+let librosCache = [];
 async function init() {
 verificarSesion();
   const gruposIniciales = await obtenerGruposTerminados();
-
+  librosCache = await obtenerLibros();
   llenarFiltroAnios(gruposIniciales);
   renderLecturaActual();
   renderizarUltimosDosMeses();

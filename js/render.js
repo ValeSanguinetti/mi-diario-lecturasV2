@@ -168,16 +168,21 @@ async function renderFavoritos() {
 }
 
 // ===================== FILTRO BUSCADOR =====================
-
-async function renderLibrosFiltrados(texto) {
+function renderLibrosFiltrados(texto) {
   const contenedor = document.getElementById("lecturaActual");
-  const libros = await obtenerLibrosSafe();
 
-  const filtrados = libros.filter(l =>
-    l.titulo.toLowerCase().includes(texto) ||
-    l.autor.toLowerCase().includes(texto) ||
-    l.genero.toLowerCase().includes(texto)
-  );
+  console.log("Filtrando libros para:", texto);
+
+  const filtrados = librosCache.filter(l => {
+    const titulo = (l.titulo || "").toLowerCase();
+    const autor = (l.autor || "").toLowerCase();
+    const genero = (l.genero || "").toLowerCase();
+    const resultado = titulo.includes(texto) || autor.includes(texto) || genero.includes(texto);
+    console.log("Libro:", l.titulo, "Coincide?", resultado);
+    return resultado;
+  });
+
+  console.log("Libros filtrados:", filtrados);
 
   contenedor.innerHTML = "";
 
@@ -189,7 +194,12 @@ async function renderLibrosFiltrados(texto) {
   const grid = document.createElement("div");
   grid.classList.add("lecturas-actuales-grid");
 
-  filtrados.forEach(libro => grid.appendChild(crearTarjetaLibro(libro)));
+  filtrados.forEach(libro => {
+    const tarjeta = crearTarjetaLibro(libro);
+    console.log("Renderizando libro:", libro.titulo);
+    grid.appendChild(tarjeta);
+  });
+
   contenedor.appendChild(grid);
 }
 
