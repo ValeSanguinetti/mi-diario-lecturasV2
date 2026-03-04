@@ -17,7 +17,7 @@ export const getLibros = async (req, res) => {
 
 // POST
 export const crearLibro = async (req, res) => {
-  console.log("BODY RECIBIDO:", req.body);
+  //console.log("BODY RECIBIDO:", req.body);
 const userId = req.user.sub;
 const { data, error } = await supabase
     .from("libros")

@@ -69,11 +69,11 @@ document.addEventListener("click", async (e) => {
   e.stopPropagation(); // 🔥 evita que se abra el modal detalle
 
   const id = e.target.dataset.id;
-  console.log("🖱 Click editar ID:", id);
+  //console.log(" Click editar ID:", id);
 
   obtenerLibrosSafe().then(libros => {
     const libro = libros.find(l => l.id === id);
-    console.log("🔎 Libro encontrado:", libro);
+   // console.log(" Libro encontrado:", libro);
 
     if (libro) cargarLibroParaEditar(libro);
   });
@@ -195,16 +195,16 @@ document.getElementById("buscadorLibros")
 
 function filtrarLibros(e) {
   const texto = e.target.value.toLowerCase().trim();
-  console.log("Buscando texto:", texto);
+  //console.log("Buscando texto:", texto);
 
   if (texto === "") {
-    console.log("Texto vacío, renderizando todo");
+    //console.log("Texto vacío, renderizando todo");
     renderLecturaActual();
     renderizarUltimosDosMeses();
     return;
   }
 
-  console.log("Libros en cache antes de filtrar:", librosCache);
+  //console.log("Libros en cache antes de filtrar:", librosCache);
 
   renderLibrosFiltrados(texto);
 }

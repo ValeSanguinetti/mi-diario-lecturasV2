@@ -147,7 +147,7 @@ async function renderPendientes() {
 // ===================== FAVORITOS =====================
 
 async function renderFavoritos() {
-  console.log("🔥 renderFavoritos ejecutándose");
+  //console.log("renderFavoritos ejecutándose");
   const contenedor = document.getElementById("favoritos");
   const libros = await obtenerLibrosSafe();
 
@@ -171,18 +171,18 @@ async function renderFavoritos() {
 function renderLibrosFiltrados(texto) {
   const contenedor = document.getElementById("lecturaActual");
 
-  console.log("Filtrando libros para:", texto);
+  //console.log("Filtrando libros para:", texto);
 
   const filtrados = librosCache.filter(l => {
     const titulo = (l.titulo || "").toLowerCase();
     const autor = (l.autor || "").toLowerCase();
     const genero = (l.genero || "").toLowerCase();
     const resultado = titulo.includes(texto) || autor.includes(texto) || genero.includes(texto);
-    console.log("Libro:", l.titulo, "Coincide?", resultado);
+    //console.log("Libro:", l.titulo, "Coincide?", resultado);
     return resultado;
   });
 
-  console.log("Libros filtrados:", filtrados);
+ // console.log("Libros filtrados:", filtrados);
 
   contenedor.innerHTML = "";
 
@@ -196,7 +196,7 @@ function renderLibrosFiltrados(texto) {
 
   filtrados.forEach(libro => {
     const tarjeta = crearTarjetaLibro(libro);
-    console.log("Renderizando libro:", libro.titulo);
+    //console.log("Renderizando libro:", libro.titulo);
     grid.appendChild(tarjeta);
   });
 

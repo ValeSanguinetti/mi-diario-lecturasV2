@@ -1,13 +1,13 @@
 async function obtenerLibros() {
-    console.log("📡 Fetching libros desde:", API_URL);
+   // console.log(" Fetching libros desde:", API_URL);
 
     const res = await fetch(API_URL);
 
-    console.log("📡 Status:", res.status);
+    // console.log(" Status:", res.status);
 
     const data = await res.json();
 
-    console.log("📚 Libros recibidos:", data);
+   // console.log(" Libros recibidos:", data);
 
     if (!Array.isArray(data)) {
         console.error("❌ La API no devolvió un array:", data);
@@ -33,8 +33,8 @@ async function guardarLibro() {
     try {
           let libroGuardado;
         if (indiceEditando !== null) {
-            // ✏️ actualizar
-            console.log("🆔 ID a actualizar:", indiceEditando);
+            //  actualizar
+           // console.log(" ID a actualizar:", indiceEditando);
            res= await fetch(`${API_URL}/${indiceEditando}`, {
                 method: "PUT",
                 headers: {
@@ -105,7 +105,7 @@ async function eliminarLibro(id) {
 
 // 🔹 Cargar libro para editar
 function cargarLibroParaEditar(libro) {
-  /*console.log("📝 cargarLibroParaEditar recibió:", libro);
+  /*console.log(" cargarLibroParaEditar recibió:", libro);
   console.log("INPUT titulo:", tituloInput);
 console.log("VALOR titulo:", libro.titulo);
 */
