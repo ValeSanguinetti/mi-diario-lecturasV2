@@ -2,20 +2,22 @@
 
 /* ===== LOGIN VIOLETA ===== */
 
+
 .login-body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(135deg, #f3efff, #e4dcff);
-   min-height: 100svh;
+  min-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px; /* 👈 clave para que no toque los bordes */
 }
-
 .login-card {
   background: #ffffff;
   padding: 40px;
-  width: 340px;
+  width: 100%;
+  max-width: 380px; /* límite máximo */
   border-radius: 16px;
   box-shadow: 0 12px 30px rgba(88, 63, 188, 0.12);
   display: flex;
