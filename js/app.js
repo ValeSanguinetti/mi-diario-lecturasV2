@@ -16,7 +16,7 @@ document.getElementById("logout").addEventListener("click", async () => {
 async function obtenerLibros() {
   const token = await window.obtenerToken();
 
-  const res = await fetch("http://localhost:3000/api/libros", {
+  const res = await fetch(`${API_URL}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

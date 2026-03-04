@@ -12,8 +12,8 @@ const filtroMes = document.getElementById("filtroMes");
 
 const btnDark = document.getElementById("toggleDark");
 const btnScrollTop = document.getElementById("btnScrollTop");
-const API_URL = "http://localhost:3000/api/libros";
-const NOTAS_API = "http://localhost:3000/api/notas";
+const API_URL = "https://diariolecturas-api.onrender.com/api/libros";
+const NOTAS_API = "https://diariolecturas-api.onrender.com/api/notas";
 let libroActivoId = null;
 let notaEditandoId = null;
 let libroActivoIndex = null;
